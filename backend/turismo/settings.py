@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-w25wosn1rps6k=uzuv4vdo=4m2h&%gui76&j1m%v)qou%+cc0h'
+SECRET_KEY = 'django-insecure-a!r$^k&x!f*be(cq(idphzs1n)k^g)wxz_z^xbn(!xm75m$@(a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'usuario',
-    'django_filters',
-    'suscriptos',
+    'django_filters'
+
 ]
 
 MIDDLEWARE = [
@@ -79,25 +79,18 @@ WSGI_APPLICATION = 'turismo.wsgi.application'
 
 #DATABASES = {
 #    'default': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'NAME': 'turismo',
-#        'USER': 'usuario',
-#        'PASSWORD': 'usuario',
-#        'HOST': '172.19.0.2',
-#        #'HOST': 'localhost',
-#        'PORT': '3306',
+#       'ENGINE': 'django.db.backends.sqlite3',
+#       'NAME': BASE_DIR / 'db.sqlite3',
 #    }
 #}
-
-import os
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASS'),
-        'HOST': os.getenv('DB_HOST'),
+        'NAME': 'turismo',
+        'USER': 'usuario',
+        'PASSWORD': 'usuario',
+        #'HOST': 'mysql',
+        'HOST': '172.20.0.2',  # Reemplaza con la IP del contenedor MySQL
         'PORT': '3306',
     }
 }
