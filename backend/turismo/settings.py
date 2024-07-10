@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'usuario',
-    'django_filters'
-
+    'django_filters',
+    'suscriptos',
 ]
 
 MIDDLEWARE = [
@@ -89,8 +89,8 @@ DATABASES = {
         'NAME': 'turismo',
         'USER': 'usuario',
         'PASSWORD': 'usuario',
-        #'HOST': 'mysql',
-        'HOST': '172.20.0.2',  # Reemplaza con la IP del contenedor MySQL
+        'HOST': 'mysql',
+        #'HOST': '172.20.0.2',  # Reemplaza con la IP del contenedor MySQL
         'PORT': '3306',
     }
 }
