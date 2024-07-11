@@ -16,8 +16,6 @@ services:
     restart: "no"  # Agregar esta línea para deshabilitar el reinicio automático
       
   web:
-  # netlify
-  # github_pages
     image: httpd:latest
     container_name: web
     ports:

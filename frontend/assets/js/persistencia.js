@@ -298,15 +298,20 @@ export async function subirImagen(archivo) {
 
 export async function subirSuscriptor(correo) {
   //const url = "https://sheetdb.io/api/v1/tv96lgxabh427?sheet=suscripcion"; // bdidomingueznegro
-  const url = "https://sheetdb.io/api/v1/m2snjn3r4siwv?sheet=suscripcion"; // ayaiten
+  //const url = "https://sheetdb.io/api/v1/m2snjn3r4siwv?sheet=suscripcion"; // ayaiten
+  const url = "http://localhost:8000/api/suscriptos/"; 
   // Cremos un objeto con los datos del usuario
-  const datos = {
+  // Quitados para que funcione con el endpoint propio
+  /* const datos = {
     data: {
-      id: "INCREMENT",
+      id: "INCREMENT",  
       correo: correo,
-      fecha: new Date,
+      fecha: new Date, 
     },
-  };
+  }; */
+  const datos = {
+    email: correo,
+  }
   // configuramos la solicitud POST
   const opciones = {
     method: "POST",
@@ -314,16 +319,16 @@ export async function subirSuscriptor(correo) {
     body: JSON.stringify(datos),
   };
   // Enviamos la solicitud POST
+  //console.log("Datos del opciones ", opciones)
   try{
     const response = await fetch(url,opciones)
     if (!response.ok){
-      throw new Error("Error al guardar el suscriptor ", data)
+      throw new Error("Error al guardar el suscriptor ", response.statusText)
     }
-    //console.log("Subida ",true)
+    //console.log("Respuesta ",response.ok)
     return true
   }catch (error) {
-    console.error("Error ", error)
-    console.log("Subida Suscriptor ",false)
+    //console.log("Fallo la carga  ", error)
     return false
   }
 }
@@ -338,20 +343,19 @@ export async function subirSuscriptor(correo) {
  */
 
 export async function consultarSuscriptor(correo) {
-  //const url = `https://sheetdb.io/api/v1/tv96lgxabh427/search?correo=${correo}&sheet=suscripcion`; // bdidominugez
-  const url = `https://sheetdb.io/api/v1/m2snjn3r4siwv/search?correo=${correo}&sheet=suscripcion`; // bdidominugez
+  const url = `http://localhost:8000/api/suscriptos/search/?email=${correo}`; // Desde nuestro backend
   try{
     const response = await fetch(url)
     const data = await response.json()
-    // Verificamos si hay algun resultado
-    if (data && data.length > 0){
-      return true
+    //console.log("consultarSuscriptor ---- Respuesta del consultarSuscriptor  ", data)
+    if (data.email){
+      return "EXISTE"
     }else{
-      return false
+      return "NO EXISTE"
     }
   }catch (error){
-    console.error("Error al cosultar un suscrptor ", error)
-    return false
+    console.error("Error al consultar el suscriptor:", error);
+    return "ERROR"
   }
 }
 
@@ -429,12 +433,14 @@ export async function cargarSuscriptor(correo) {
     // regresa true si es correo sino regresa false
     // COMPROBAR QUE EL CORREO NO EXISTE
     let existe = await consultarSuscriptor(correo);
-    if (existe) {
+    //console.log("cargarSuscriptor --- respuesta de consultaSuscriptor  ", existe)
+    if (existe == "EXISTE") {
       miMensaje("paraaaaaa ansioooosooo  ya estas suscripto!!! -- Gracias por elegirnos","Advertencia",4)
       //alert("paraaaaaa ansioooosooo  ya estas suscripto!!! -- Gracias por elegirnos");
-    } else {
+    } else if (existe == "NO EXISTE"){
       // CARGAMOS EL CORREO AL ENDPOINT
       let respuesta = subirSuscriptor(correo);
+      //console.log("Respuesta de SubirSuscriptor  ", respuesta)
       if (respuesta) {
         miMensaje("Gracias por suscribirte!","Informacion",4)
         //alert("Gracias por suscribirte!!");

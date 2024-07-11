@@ -8,6 +8,15 @@ class SuscriptoViewSet(viewsets.ModelViewSet):
     queryset = Suscripto.objects.all()
     serializer_class = SuscriptoSerializer
 
+    def create(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        if not email:
+            return Response({'error': 'Email is required'}, status=400)
+        if Suscripto.objects.filter(email=email).exists():
+            return Response({'error': 'Email already subscribed'}, status=400)
+        suscripto = Suscripto.objects.create(email=email)
+        return Response({'mensasage': 'Subscription successful', 'email': suscripto.email, 'date_subscribed': suscripto.date_subscribed})
+
     @action(detail=False, methods=['post'])
     def subscribe(self, request):
         email = request.data.get('email')
@@ -28,4 +37,4 @@ class SuscriptoViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(suscripto)
             return Response(serializer.data)
         except Suscripto.DoesNotExist:
-            return Response({'error': 'Email not found'}, status = 404)
+            return Response({'email': None}, status = 200)
