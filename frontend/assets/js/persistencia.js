@@ -390,7 +390,7 @@ export async function consultarSuscriptor(correo) {
     }
   }
 
-    /**
+   /**
    * Funcion que muestra un mensaje en la parte inferior de la pantalla
    * 
    * @param {string} msg  Cuerpo del mensaje que queremos dar
@@ -419,6 +419,45 @@ export async function consultarSuscriptor(correo) {
           hoja.removeChild(contenedor);
       }, tiempo * 1000);
     }
+  
+   /**
+   * Funcion que muestra un mensaje en la parte inferior de la pantalla --- modificada para poder dar la opcion de quitar suscripcion
+   * 
+   * @param {string} msg  Cuerpo del mensaje que queremos dar
+   * @param {string} tit  Titulo que llevara el mensaje
+   * @param {number} tiempo tiempo en segundos que tardara en desaparecer el mensaje
+   * @param {string} correo  Correo sobre el que trabajamos
+   */
+    export function miMensajeSubs(msg, tit, tiempo, correo) {
+      // Creamos los elementos
+      const contenedor = document.createElement("div");
+      contenedor.classList.add("contenedor-miMensage");
+      const titulo = document.createElement("h3");
+      titulo.textContent = tit;
+      const mensaje = document.createElement("p");
+      mensaje.textContent = msg;
+      const btnDes = document.createElement("button");
+      btnDes.textContent = "Eliminar Suscripción";
+
+      btnDes.addEventListener("click", () => {
+        eliminarSuscriptor(correo);
+      });
+      
+      
+      // Insertamos los elementos al contenedor
+      contenedor.appendChild(titulo);
+      contenedor.appendChild(mensaje);
+      contenedor.appendChild(btnDes)
+
+      // Seleccionamos el destino de la página (será el body) y agregamos el mensaje
+      const hoja = document.querySelector("body");
+      hoja.appendChild(contenedor);
+      
+      // Eliminamos el mensaje después de `tiempo` segundos
+      setTimeout(() => {
+          hoja.removeChild(contenedor);
+      }, tiempo * 1000);
+    }
 
     // FUNCION DE CARGA DEL CORREO
 /**
@@ -435,7 +474,7 @@ export async function cargarSuscriptor(correo) {
     let existe = await consultarSuscriptor(correo);
     //console.log("cargarSuscriptor --- respuesta de consultaSuscriptor  ", existe)
     if (existe == "EXISTE") {
-      miMensaje("paraaaaaa ansioooosooo  ya estas suscripto!!! -- Gracias por elegirnos","Advertencia",4)
+      miMensajeSubs("paraaaaaa ansioooosooo  ya estas suscripto!!! -- Gracias por elegirnos","Advertencia",6,correo)
       //alert("paraaaaaa ansioooosooo  ya estas suscripto!!! -- Gracias por elegirnos");
     } else if (existe == "NO EXISTE"){
       // CARGAMOS EL CORREO AL ENDPOINT
@@ -451,5 +490,26 @@ export async function cargarSuscriptor(correo) {
     miMensaje("Correo no Valido!","Advertencia",3)
     //alert("Correo no Valido");
     //document.getElementById(nombreElemento).select();
+  }
+}
+
+async function eliminarSuscriptor(correo) {
+  const url = `http://localhost:8000/api/suscriptos/delete/?email=${correo}`;
+  try {
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (response.ok) {
+      console.log("Suscripción eliminada exitosamente.");
+      // Puedes mostrar un mensaje de éxito o realizar alguna otra acción
+    } else {
+      console.error("Error al eliminar la suscripción:", response.statusText);
+      // Puedes mostrar un mensaje de error o realizar alguna otra acción
+    }
+  } catch (error) {
+    console.error("Error al eliminar la suscripción:", error);
   }
 }

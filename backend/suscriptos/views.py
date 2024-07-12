@@ -38,3 +38,17 @@ class SuscriptoViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         except Suscripto.DoesNotExist:
             return Response({'email': None}, status = 200)
+    
+    @action(detail=False, methods=['delete'], url_path='delete')
+    def delete_by_email(self, request):
+        email = request.query_params.get('email')
+        if not email:
+            return Response({'error': 'Email query parameter is required'}, status=400)
+        try:
+            suscripto = Suscripto.objects.get(email=email)
+            suscripto.delete()
+            return Response({'message': 'Suscriber deleted successfully'}, status=200)
+        except Suscripto.DoesNotExist:
+            return Response({'error': 'Email not found'}, status=404)
+        
+        # http://localhost:8000/api/suscriptos/delete/?email=bdidominguez@gmail.com

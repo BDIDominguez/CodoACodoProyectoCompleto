@@ -68,3 +68,10 @@
   margin: 0;
   color: black;
 }
+
+.contenedor-miMensage button{
+  margin-top: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
