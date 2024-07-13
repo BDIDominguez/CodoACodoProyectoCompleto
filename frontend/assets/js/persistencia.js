@@ -176,23 +176,22 @@ export async function listarUsuarios() {
  * 
  */
 export async function subirUsuario(usuario) {
-  //const url = "https://sheetdb.io/api/v1/tv96lgxabh427?sheet=usuarios"; // bdidomingueznegro
-  const url = "https://sheetdb.io/api/v1/m2snjn3r4siwv?sheet=usuarios"; // ayaiten
+  
+  const url = "http://localhost:8000/api/usuario/"; // Endpoint Propio
+  
+  console.log("Ruta del Endpoint  ",url)
   // Creemos un objeto con los datos del usuario
   const datosUsuario = {
-    data: {
-      id: "INCREMENT",
-      dni: usuario.dni,
-      correo: usuario.correo,
-      nombre: usuario.nombre,
-      apellido: usuario.apellido,
-      fechaNacimiento: usuario.fechaNacimiento,
-      usuario: usuario.usuario,
-      clave: usuario.clave,
-      foto: usuario.foto,
-      fotoMiniatura: usuario.fotoMiniatura
-      
-    },
+    //id: usuario.id,
+    dni: usuario.dni,
+    correo: usuario.correo,
+    nombre: usuario.nombre,
+    apellido: usuario.apellido,
+    fechaNacimiento: usuario.fechaNacimiento,
+    usuario: usuario.usuario,
+    clave: usuario.clave,
+    foto: usuario.foto,
+    fotoMiniatura: usuario.fotoMiniatura
   };
   // configuramos la solicitud POST
   const opciones = {
@@ -203,12 +202,13 @@ export async function subirUsuario(usuario) {
 
   // Enviamos la solicitud POST
   try {
+    console.log("Datos que se envian al server   ", opciones)
     const response = await fetch(url, opciones);
     if (!response.ok) {
       throw new Error("Error al guardar el usuario");
     }
     const data = await response.json();
-    //console.log("Usuario Guardado Existosamente: ", data);
+    console.log("Usuario Guardado Existosamente: ", data);
     return true;
   } catch (error) {
     console.error("Error ", error);

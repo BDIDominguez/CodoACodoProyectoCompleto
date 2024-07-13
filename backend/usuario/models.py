@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class Usuario(models.Model):
-    id = models.IntegerField(unique=True,primary_key=True)
+    #id = models.IntegerField(unique=True,primary_key=True)
     dni = models.IntegerField()
     correo = models.CharField(max_length=150)
     nombre = models.CharField(max_length=60)
