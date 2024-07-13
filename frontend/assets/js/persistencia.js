@@ -179,7 +179,7 @@ export async function subirUsuario(usuario) {
   
   const url = "http://localhost:8000/api/usuario/"; // Endpoint Propio
   
-  console.log("Ruta del Endpoint  ",url)
+  //console.log("Ruta del Endpoint  ",url)
   // Creemos un objeto con los datos del usuario
   const datosUsuario = {
     //id: usuario.id,
@@ -202,7 +202,7 @@ export async function subirUsuario(usuario) {
 
   // Enviamos la solicitud POST
   try {
-    console.log("Datos que se envian al server   ", opciones)
+    //console.log("Datos que se envian al server   ", opciones)
     const response = await fetch(url, opciones);
     if (!response.ok) {
       throw new Error("Error al guardar el usuario");
